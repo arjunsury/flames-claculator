@@ -1,0 +1,72 @@
+import java.util.Scanner;
+
+public class FlamesCalculator {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Input names
+        System.out.print("Enter the first name: ");
+        String name1 = scanner.nextLine().toLowerCase().replaceAll("\\s", "");
+        System.out.print("Enter the second name: ");
+        String name2 = scanner.nextLine().toLowerCase().replaceAll("\\s", "");
+
+        // Calculate the remaining characters
+        int remainingCharacters = getRemainingCharactersCount(name1, name2);
+
+        // Determine the FLAMES result
+        String result = getFlamesResult(remainingCharacters);
+
+        // Output the result
+        System.out.println("The FLAMES result is: " + result);
+
+        scanner.close();
+    }
+
+    private static int getRemainingCharactersCount(String name1, String name2) {
+        StringBuilder sb1 = new StringBuilder(name1);
+        StringBuilder sb2 = new StringBuilder(name2);
+
+        for (int i = 0; i < sb1.length(); i++) {
+            for (int j = 0; j < sb2.length(); j++) {
+                if (sb1.charAt(i) == sb2.charAt(j)) {
+                    sb1.deleteCharAt(i);
+                    sb2.deleteCharAt(j);
+                    i--;
+                    break;
+                }
+            }
+        }
+
+        return sb1.length() + sb2.length();
+    }
+
+    private static String getFlamesResult(int count) {
+        String flames = "FLAMES";
+        StringBuilder sb = new StringBuilder(flames);
+
+        int index = 0;
+        while (sb.length() > 1) {
+            index = (index + count - 1) % sb.length();
+            sb.deleteCharAt(index);
+        }
+
+        char resultChar = sb.charAt(0);
+        switch (resultChar) {
+            case 'F':
+                return "Friends";
+            case 'L':
+                return "Love";
+            case 'A':
+                return "Affection";
+            case 'M':
+                return "Marriage";
+            case 'E':
+                return "Enemies";
+            case 'S':
+                return "Siblings";
+            default:
+                return "Unknown";
+        }
+    }
+}
